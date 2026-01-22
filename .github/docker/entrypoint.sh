@@ -1,9 +1,9 @@
 #!/bin/ash -e
 cd /app
 
-mkdir -p /var/log/panel/logs/ /var/log/supervisord/ /var/log/nginx/ /var/log/php7/ \
-  && chmod 777 /var/log/panel/logs/ \
-  && ln -s /app/storage/logs/ /var/log/panel/
+mkdir -p /var/log/panel /var/log/supervisord/ /var/log/nginx/ /var/log/php7/ \
+  && chmod 777 /var/log/panel/ \
+  && ln -sf /app/storage/logs /var/log/panel/logs
 # Ensure proper permissions for Laravel storage directories
 mkdir -p /app/storage/logs /app/storage/framework/cache /app/storage/framework/sessions /app/storage/framework/views \
   && chmod -R 777 /app/storage/ \
@@ -11,11 +11,7 @@ mkdir -p /app/storage/logs /app/storage/framework/cache /app/storage/framework/s
 chmod g+s /app/storage/logs/
 chown nginx:nginx /app/storage/logs/
 
-# Check that user has mounted the /app/var directory
-if [ ! -d /app/var ]; then
-  echo "You must mount the /app/var directory to the container."
-  exit 1
-fi
+mkdir -p /app/var
 
 # Check the .env file exists and make a blank one if needed
 if [ ! -f /app/var/.env ]; then
