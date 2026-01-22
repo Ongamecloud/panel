@@ -92,6 +92,14 @@ else
   rm -rf /etc/nginx/http.d/default.conf
 fi
 
+if [[ -z $PORT ]]; then
+  echo -e "PORT not specified, defaulting to 80"
+  PORT=80
+fi
+
+echo "Substituting PORT=$PORT in nginx config"
+sed -i "s/\${PORT:-80}/$PORT/g" /etc/nginx/http.d/panel.conf
+
 if [[ -z $DB_PORT ]]; then
   echo -e "DB_PORT not specified, defaulting to 3306"
   DB_PORT=3306
